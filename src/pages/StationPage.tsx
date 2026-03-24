@@ -297,7 +297,7 @@ export default function StationPage() {
               <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
                 {variant === "guest"
                   ? "Для неавторизованных пользователей доступна только базовая информация по станции, ожидаемая доходность и агрегированная выручка за последние 30 дней"
-                  : variant === "pending"
+                  : variant === "pending" || variant === "no-lots"
                   ? "По станции уже есть заявка, но она еще не прошла модерацию. Последняя выплата не отображается до подтверждения лотов"
                   : "Вы авторизованы, но по этой станции у вас еще нет поданных заявок. Можно подать первую заявку на инвестирование"}
               </div>
@@ -317,12 +317,13 @@ export default function StationPage() {
 
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>
                 <span>Размещение лотов</span>
-                <span>Доступно лотов {variant === "pending" ? 12 : STATION.availableLots}/{STATION.totalLots}</span>
+                <span>Доступно лотов {variant === "pending" ? 12 : variant === "no-lots" ? 10 : STATION.availableLots}/{STATION.totalLots}</span>
               </div>
               <LotBar
                 total={STATION.totalLots}
-                available={variant === "pending" ? 12 : STATION.availableLots}
+                available={variant === "pending" ? 12 : variant === "no-lots" ? 10 : STATION.availableLots}
                 selected={variant === "pending" ? 1 : 0}
+                owned={variant === "no-lots" ? 3 : 0}
               />
 
               {variant === "guest" ? (
@@ -400,6 +401,8 @@ export default function StationPage() {
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 24px" }}>
             {variant === "pending"
               ? "Здесь отображается состояние заявки до подписания договора и подтверждения оплаты"
+              : variant === "no-lots"
+              ? "Здесь отображается состояние заявки до подписания договора и подтверждения оплаты"
               : "В этом блоке отображается ваш статус по станции, когда вы подаете заявки и покупаете лоты"}
           </p>
 
@@ -429,6 +432,26 @@ export default function StationPage() {
                 Мы ожидаем завершения проверки документов и подтверждения оплаты. После этого лоты перейдут в подтвержденный статус и откроется детализация по сессиям
               </div>
             </>
+          ) : variant === "no-lots" ? (
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {[
+                { label: "Лотов куплено", value: "3 лота" },
+                { label: "Объем инвестиций", value: "300 000 Р" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: "#f9f9f9",
+                    borderRadius: 10,
+                    padding: "14px 20px",
+                    minWidth: 160,
+                  }}
+                >
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 6 }}>{item.label}</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: "#111" }}>{item.value}</div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div
               style={{
@@ -444,6 +467,113 @@ export default function StationPage() {
             </div>
           )}
         </div>}
+
+        {/* Sessions table — no-lots variant */}
+        {variant === "no-lots" && (
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 16,
+              padding: "28px 32px",
+              marginTop: 20,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111", margin: 0 }}>
+                Детализация зарядных сессий
+              </h3>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 13, color: "#6b7280" }}>Период выгрузки</span>
+                <select
+                  style={{
+                    border: "1.5px solid #e5e7eb",
+                    borderRadius: 10,
+                    padding: "8px 14px",
+                    fontSize: 13,
+                    color: "#111",
+                    fontFamily: "'Golos Text', sans-serif",
+                    background: "#fff",
+                    cursor: "pointer",
+                    appearance: "none",
+                    paddingRight: 32,
+                    backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 10px center",
+                  }}
+                  defaultValue="april"
+                >
+                  <option value="april">Апрель, 2026</option>
+                  <option value="march">Март, 2026</option>
+                  <option value="february">Февраль, 2026</option>
+                </select>
+                <button
+                  style={{
+                    background: "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 10,
+                    padding: "9px 18px",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "'Golos Text', sans-serif",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Скачать детализацию CSV
+                </button>
+              </div>
+            </div>
+
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #f0f0f0" }}>
+                  {["Дата старта", "Дата завершения", "Потребление, кВт·ч", "Выручка, Р"].map((col) => (
+                    <th
+                      key={col}
+                      style={{
+                        padding: "10px 12px",
+                        textAlign: "center",
+                        fontSize: 13,
+                        fontWeight: 400,
+                        color: "#9ca3af",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                ].map((row, i) => (
+                  <tr key={i} style={{ borderBottom: "1px solid #f9f9f9" }}>
+                    {[row.start, row.end, row.kwh, row.revenue].map((cell, j) => (
+                      <td
+                        key={j}
+                        style={{
+                          padding: "11px 12px",
+                          textAlign: "center",
+                          fontSize: 13,
+                          color: "#111",
+                        }}
+                      >
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <Footer />
