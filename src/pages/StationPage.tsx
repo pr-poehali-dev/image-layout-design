@@ -161,7 +161,8 @@ export default function StationPage() {
                   <div
                     key={field.label}
                     style={{
-                      background: "#f9f9f9",
+                      background: "#fff",
+                      border: "1px solid #e5e7eb",
                       borderRadius: 10,
                       padding: "10px 14px",
                       gridColumn: field.full ? "1 / -1" : undefined,
@@ -199,7 +200,8 @@ export default function StationPage() {
                   <div
                     key={m.label}
                     style={{
-                      background: "#f9f9f9",
+                      background: "#fff",
+                      border: "1px solid #e5e7eb",
                       borderRadius: 10,
                       padding: "12px 14px",
                     }}
@@ -489,56 +491,53 @@ export default function StationPage() {
               </div>
             </div>
 
-            <div style={{ background: "#f9f9f9", borderRadius: 12, overflow: "hidden" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                  <tr style={{ background: "#f3f3f3" }}>
-                    {["Дата старта", "Дата завершения", "Потребление, кВт·ч", "Выручка, ₽"].map((col) => (
-                      <th
-                        key={col}
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #e5e7eb" }}>
+                  {["Дата старта", "Дата завершения", "Потребление, кВт·ч", "Выручка, ₽"].map((col) => (
+                    <th
+                      key={col}
+                      style={{
+                        padding: "12px 16px",
+                        textAlign: "center",
+                        fontSize: 13,
+                        fontWeight: 400,
+                        color: "#9ca3af",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                  { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
+                  { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
+                ].map((row, i) => (
+                  <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                    {[row.start, row.end, row.kwh, row.revenue].map((cell, j) => (
+                      <td
+                        key={j}
                         style={{
-                          padding: "12px 20px",
+                          padding: "12px 16px",
                           textAlign: "center",
                           fontSize: 13,
-                          fontWeight: 400,
-                          color: "#9ca3af",
-                          whiteSpace: "nowrap",
-                          borderBottom: "1px solid #e8e8e8",
+                          color: "#111",
                         }}
                       >
-                        {col}
-                      </th>
+                        {cell}
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
-                    { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
-                    { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
-                    { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
-                    { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
-                    { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
-                  ].map((row, i) => (
-                    <tr key={i} style={{ background: "#fff", borderBottom: "1px solid #f0f0f0" }}>
-                      {[row.start, row.end, row.kwh, row.revenue].map((cell, j) => (
-                        <td
-                          key={j}
-                          style={{
-                            padding: "11px 20px",
-                            textAlign: "center",
-                            fontSize: 13,
-                            color: "#111",
-                          }}
-                        >
-                          {cell}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
