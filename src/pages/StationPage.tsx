@@ -489,6 +489,7 @@ export default function StationPage() {
               </div>
             </div>
 
+            <div style={{ border: "1px solid #d1d5db", borderRadius: 12, overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ background: "#f5f5f5" }}>
@@ -538,6 +539,7 @@ export default function StationPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>
