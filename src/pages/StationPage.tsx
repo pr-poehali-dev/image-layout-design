@@ -1,0 +1,492 @@
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import LotBar from "@/components/LotBar";
+
+const STATION = {
+  id: "22345672",
+  number: "22345672",
+  address: "ул. Воронцово Поле · ул. Воронцово Поле, 16, стр. 1",
+  status: "Ведется набор инвестиций",
+  region: "Москва",
+  city: "Москва",
+  fullAddress: "ул. Воронцово Поле, 16с1",
+  power: "150 кВт · Быстрая DC",
+  connectors: "1 CCS · 1 GBT",
+  totalLots: 20,
+  availableLots: 13,
+  sessions: 200,
+  revenue: "684 000 Р",
+  consumption: "12 840",
+};
+
+export default function StationPage() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const stationId = id || STATION.id;
+
+  const [showInvestModal, setShowInvestModal] = useState(false);
+  const [selectedLots, setSelectedLots] = useState(2);
+
+  const lotPrice = 100000;
+
+  return (
+    <div style={{ background: "#f5f5f5", minHeight: "100vh", fontFamily: "'Golos Text', sans-serif" }}>
+      <Header page="station" userName="Рома Роман" userPhone="+7 (9**) ***-**-**" isLoggedIn />
+
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px" }}>
+        {/* Breadcrumb */}
+        <div style={{ padding: "16px 0" }}>
+          <button
+            onClick={() => navigate("/main")}
+            style={{
+              background: "none",
+              border: "none",
+              fontSize: 13,
+              color: "#6b7280",
+              cursor: "pointer",
+              padding: 0,
+              fontFamily: "'Golos Text', sans-serif",
+            }}
+          >
+            ← Назад к списку проектов
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          {/* Left card */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 16,
+              padding: "28px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <h1 style={{ fontSize: 32, fontWeight: 700, color: "#111", margin: 0 }}>
+                № {stationId}
+              </h1>
+              <button
+                style={{
+                  background: "transparent",
+                  border: "1.5px solid #ddd",
+                  borderRadius: 20,
+                  padding: "9px 20px",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  fontFamily: "'Golos Text', sans-serif",
+                  color: "#111",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Посмотреть на карте
+              </button>
+            </div>
+
+            <div style={{ fontSize: 13, color: "#9ca3af" }}>{STATION.address}</div>
+
+            {/* Station photo */}
+            <div
+              style={{
+                background: "#111",
+                borderRadius: 12,
+                height: 340,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 40%, #111 100%)",
+                }}
+              />
+              {/* EV charger illustration */}
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  display: "flex",
+                  gap: 12,
+                  alignItems: "flex-end",
+                  padding: "20px 30px",
+                }}
+              >
+                {[1, 2, 3].map((n) => (
+                  <div
+                    key={n}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 8,
+                        height: n === 2 ? 180 : 160,
+                        background: n === 2 ? "#4ade80" : "#3b82f6",
+                        borderRadius: 4,
+                        opacity: 0.9,
+                      }}
+                    />
+                    <div style={{ color: "#fff", fontSize: 11, opacity: 0.6 }}>
+                      {n === 1 ? "CCS 2" : n === 2 ? "GB/T" : "CCS 2"}
+                    </div>
+                    <div
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.1)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontSize: 11,
+                      }}
+                    >
+                      {n}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* hyper logo */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 20,
+                  left: 20,
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: 18,
+                  opacity: 0.9,
+                }}
+              >
+                ⓔ hyper
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 20,
+                  color: "#fff",
+                  fontSize: 12,
+                  opacity: 0.6,
+                }}
+              >
+                № 12345
+              </div>
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Status card */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 16,
+                padding: "24px 28px",
+              }}
+            >
+              <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Статус станции</div>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: "#111", margin: "0 0 20px" }}>
+                {STATION.status}
+              </h2>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {[
+                  { label: "Регион", value: STATION.region },
+                  { label: "Город", value: STATION.city },
+                  { label: "Адрес локации", value: STATION.fullAddress, full: true },
+                  { label: "Параметры станции", value: STATION.power },
+                  { label: "Коннекторы", value: STATION.connectors },
+                ].map((field) => (
+                  <div
+                    key={field.label}
+                    style={{
+                      background: "#f9f9f9",
+                      borderRadius: 10,
+                      padding: "10px 14px",
+                      gridColumn: field.full ? "1 / -1" : undefined,
+                    }}
+                  >
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>{field.label}</div>
+                    <div style={{ fontSize: 14, fontWeight: 500, color: "#111" }}>{field.value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Metrics card */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 16,
+                padding: "24px 28px",
+              }}
+            >
+              <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 16 }}>Показатели ЭЗС за 30 дней</div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+                {[
+                  { label: "Количество сессий", value: String(STATION.sessions) },
+                  { label: "Выручка", value: STATION.revenue },
+                  { label: "Потребление (кВт·ч)", value: STATION.consumption },
+                ].map((m) => (
+                  <div
+                    key={m.label}
+                    style={{
+                      background: "#f9f9f9",
+                      borderRadius: 10,
+                      padding: "12px 14px",
+                    }}
+                  >
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>{m.label}</div>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: "#111" }}>{m.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
+                Вы авторизованы, но по этой станции у вас еще нет поданных заявок.
+                <br />
+                Можно подать первую заявку на инвестирование
+              </div>
+            </div>
+
+            {/* Lots card */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 16,
+                padding: "24px 28px",
+              }}
+            >
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: "#111", margin: "0 0 16px" }}>
+                Лоты для инвестирования
+              </h3>
+
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>
+                <span>Размещение лотов</span>
+                <span>Доступно лотов {STATION.availableLots}/{STATION.totalLots}</span>
+              </div>
+              <LotBar total={STATION.totalLots} available={STATION.availableLots} />
+
+              <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+                <button
+                  onClick={() => setShowInvestModal(true)}
+                  style={{
+                    flex: 1,
+                    background: "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 20,
+                    padding: "12px 0",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "'Golos Text', sans-serif",
+                  }}
+                >
+                  Инвестировать
+                </button>
+                <button
+                  onClick={() => navigate("/investments")}
+                  style={{
+                    flex: 1,
+                    background: "transparent",
+                    color: "#111",
+                    border: "1.5px solid #ddd",
+                    borderRadius: 20,
+                    padding: "12px 0",
+                    fontSize: 14,
+                    fontWeight: 500,
+                    cursor: "pointer",
+                    fontFamily: "'Golos Text', sans-serif",
+                  }}
+                >
+                  Мои инвестиции
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* My investments block */}
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 16,
+            padding: "32px",
+            marginTop: 20,
+          }}
+        >
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: "#111", margin: "0 0 8px" }}>
+            Мои инвестиции по станции
+          </h2>
+          <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 24px" }}>
+            В этом блоке отображается ваш статус по станции, когда вы подаете заявки и покупаете лоты
+          </p>
+
+          <div
+            style={{
+              background: "#f9f9f9",
+              borderRadius: 10,
+              padding: "16px 20px",
+              display: "inline-block",
+              minWidth: 220,
+            }}
+          >
+            <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Статус заявки</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>Заявок по станции пока нет</div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+
+      {/* Invest Modal */}
+      {showInvestModal && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 100,
+          }}
+          onClick={(e) => e.target === e.currentTarget && setShowInvestModal(false)}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 20,
+              padding: "28px",
+              width: 360,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+            }}
+          >
+            <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>
+              ТРЦ "Космос" · Московский проспект, 108
+            </div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: "#111", marginBottom: 16 }}>
+              № 52345675
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>
+              Доступно лотов 13/20
+            </div>
+            <LotBar total={20} available={13} selected={selectedLots} />
+
+            {/* Lot selector */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 20,
+                margin: "24px 0 16px",
+              }}
+            >
+              <button
+                onClick={() => setSelectedLots(Math.max(1, selectedLots - 1))}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  border: "1.5px solid #ddd",
+                  background: "transparent",
+                  fontSize: 18,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#111",
+                }}
+              >
+                −
+              </button>
+              <span style={{ fontSize: 15, color: "#111" }}>Добавить лот</span>
+              <button
+                onClick={() => setSelectedLots(Math.min(13, selectedLots + 1))}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  border: "1.5px solid #ddd",
+                  background: "transparent",
+                  fontSize: 18,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#111",
+                }}
+              >
+                +
+              </button>
+            </div>
+
+            <div style={{ textAlign: "center", fontSize: 14, color: "#6b7280", marginBottom: 24 }}>
+              Выбрано <strong style={{ color: "#111" }}>{selectedLots} лота</strong> на сумму:{" "}
+              <strong style={{ color: "#111" }}>
+                {(selectedLots * lotPrice).toLocaleString("ru-RU")} Р
+              </strong>
+            </div>
+
+            <div style={{ display: "flex", gap: 12 }}>
+              <button
+                onClick={() => setShowInvestModal(false)}
+                style={{
+                  flex: 1,
+                  background: "transparent",
+                  border: "1.5px solid #ddd",
+                  borderRadius: 24,
+                  padding: "12px 0",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  fontFamily: "'Golos Text', sans-serif",
+                  color: "#111",
+                }}
+              >
+                Выйти
+              </button>
+              <button
+                style={{
+                  flex: 1,
+                  background: "#111",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 24,
+                  padding: "12px 0",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "'Golos Text', sans-serif",
+                }}
+              >
+                Отправить заявку
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

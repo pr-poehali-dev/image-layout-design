@@ -97,5 +97,17 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Golos Text", sans-serif;
   }
+}
+
+:root {
+  --hyper-bg: #f5f5f5;
+  --hyper-card: #ffffff;
+  --hyper-border: #e5e5e5;
+  --hyper-text: #1a1a1a;
+  --hyper-muted: #6b7280;
+  --hyper-label: #9ca3af;
+  --hyper-black: #111111;
+  --hyper-radius: 12px;
 }
