@@ -438,7 +438,7 @@ export default function StationPage() {
             style={{
               background: "#fff",
               borderRadius: 16,
-              padding: "28px 32px",
+              padding: "28px 48px",
               marginTop: 20,
             }}
           >
