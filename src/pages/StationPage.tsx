@@ -39,24 +39,48 @@ export default function StationPage() {
   const isLoggedIn = variant !== "guest";
 
   return (
-    <div style={{ background: "#f5f5f5", minHeight: "100vh", fontFamily: "'Golos Text', sans-serif" }}>
+    <div
+      style={{
+        background: "#f5f5f5",
+        minHeight: "100vh",
+        fontFamily: "'Golos Text', sans-serif",
+      }}
+    >
       {/* Dev variant switcher */}
-      <div style={{ background: "#f0f0f0", borderBottom: "1px solid #e0e0e0", padding: "6px 24px", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: 11, color: "#999", marginRight: 4 }}>Вариант:</span>
-        {(["guest", "auth", "pending", "no-lots", "approved"] as Variant[]).map((v) => (
-          <button
-            key={v}
-            onClick={() => setVariant(v)}
-            style={{
-              fontSize: 11, padding: "3px 10px", borderRadius: 12,
-              border: "1px solid #ccc", cursor: "pointer", fontFamily: "'Golos Text', sans-serif",
-              background: variant === v ? "#111" : "#fff",
-              color: variant === v ? "#fff" : "#555",
-            }}
-          >
-            {v}
-          </button>
-        ))}
+      <div
+        style={{
+          background: "#f0f0f0",
+          borderBottom: "1px solid #e0e0e0",
+          padding: "6px 24px",
+          display: "flex",
+          gap: 8,
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <span style={{ fontSize: 11, color: "#999", marginRight: 4 }}>
+          Вариант:
+        </span>
+        {(["guest", "auth", "pending", "no-lots", "approved"] as Variant[]).map(
+          (v) => (
+            <button
+              key={v}
+              onClick={() => setVariant(v)}
+              style={{
+                fontSize: 11,
+                padding: "3px 10px",
+                borderRadius: 12,
+                border: "1px solid #ccc",
+                cursor: "pointer",
+                fontFamily: "'Golos Text', sans-serif",
+                background: variant === v ? "#111" : "#fff",
+                color: variant === v ? "#fff" : "#555",
+              }}
+            >
+              {v}
+            </button>
+          ),
+        )}
       </div>
 
       <Header
@@ -85,13 +109,32 @@ export default function StationPage() {
           </button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-          <StationLeftCard stationId={stationId} address={STATION.address} />
-          <StationRightColumn
-            station={STATION}
-            variant={variant}
-            onInvest={() => setShowInvestModal(true)}
-          />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 20,
+            alignItems: "stretch",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <StationLeftCard stationId={stationId} address={STATION.address} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0, minHeight: 0 }}>
+            <StationRightColumn
+              station={STATION}
+              variant={variant}
+              onInvest={() => setShowInvestModal(true)}
+            />
+          </div>
         </div>
 
         <StationMyInvestments variant={variant} />
