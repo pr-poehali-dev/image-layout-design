@@ -489,7 +489,7 @@ export default function StationPage() {
               </div>
             </div>
 
-            <div style={{ border: "1px solid #d1d5db", borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ borderRadius: 12, overflow: "hidden" }}>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ background: "#f5f5f5" }}>
@@ -503,8 +503,7 @@ export default function StationPage() {
                         fontWeight: 400,
                         color: "#111",
                         whiteSpace: "nowrap",
-                        borderTop: "1px solid #d1d5db",
-                        borderBottom: "1px solid #d1d5db",
+                        borderBottom: "1px solid #e5e7eb",
                       }}
                     >
                       {col}
@@ -521,7 +520,7 @@ export default function StationPage() {
                   { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
                   { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
                 ].map((row, i) => (
-                  <tr key={i} style={{ borderBottom: "1px solid #d1d5db" }}>
+                  <tr key={i} style={{ borderBottom: "1px solid #e5e7eb" }}>
                     {[row.start, row.end, row.kwh, row.revenue].map((cell, j) => (
                       <td
                         key={j}
