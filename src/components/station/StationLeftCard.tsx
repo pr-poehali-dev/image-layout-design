@@ -9,7 +9,7 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
       style={{
         background: "#fff",
         borderRadius: 16,
-        padding: "28px 28px 0 28px",
+        padding: "28px",
         display: "flex",
         flexDirection: "column",
         gap: 12,
@@ -39,14 +39,12 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
 
       <div style={{ fontSize: 13, color: "#9ca3af" }}>{address}</div>
 
-      {/* Серая подложка: с отступами по бокам, касается низа карточки, скруглена только сверху */}
       <div
         style={{
-          background: "#ebebeb",
-          borderRadius: "12px 12px 0 0",
+          background: "#e8e8e8",
+          borderRadius: 12,
           overflow: "hidden",
-          margin: "4px -28px 0 -28px",
-          padding: "24px 40px 0 40px",
+          flex: 1,
         }}
       >
         <img
