@@ -21,6 +21,8 @@ const STATION = {
   consumption: "12 840",
 };
 
+type Variant = "guest" | "auth" | "pending" | "no-lots" | "approved";
+
 export default function StationPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -28,12 +30,38 @@ export default function StationPage() {
 
   const [showInvestModal, setShowInvestModal] = useState(false);
   const [selectedLots, setSelectedLots] = useState(2);
+  const [variant, setVariant] = useState<Variant>("guest");
 
   const lotPrice = 100000;
+  const isLoggedIn = variant !== "guest";
 
   return (
     <div style={{ background: "#f5f5f5", minHeight: "100vh", fontFamily: "'Golos Text', sans-serif" }}>
-      <Header page="station" userName="Рома Роман" userPhone="+7 (9**) ***-**-**" isLoggedIn />
+      {/* Dev variant switcher */}
+      <div style={{ background: "#f0f0f0", borderBottom: "1px solid #e0e0e0", padding: "6px 24px", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ fontSize: 11, color: "#999", marginRight: 4 }}>Вариант:</span>
+        {(["guest", "auth", "pending", "no-lots", "approved"] as Variant[]).map((v) => (
+          <button
+            key={v}
+            onClick={() => setVariant(v)}
+            style={{
+              fontSize: 11, padding: "3px 10px", borderRadius: 12,
+              border: "1px solid #ccc", cursor: "pointer", fontFamily: "'Golos Text', sans-serif",
+              background: variant === v ? "#111" : "#fff",
+              color: variant === v ? "#fff" : "#555",
+            }}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+
+      <Header
+        page="station"
+        userName={isLoggedIn ? "Рома Роман" : undefined}
+        userPhone={isLoggedIn ? "+7 (9**) ***-**-**" : undefined}
+        isLoggedIn={isLoggedIn}
+      />
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 24px" }}>
         {/* Breadcrumb */}
@@ -240,12 +268,18 @@ export default function StationPage() {
             >
               <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 16 }}>Показатели ЭЗС за 30 дней</div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
-                {[
-                  { label: "Количество сессий", value: String(STATION.sessions) },
-                  { label: "Выручка", value: STATION.revenue },
-                  { label: "Потребление (кВт·ч)", value: STATION.consumption },
-                ].map((m) => (
+              <div style={{ display: "grid", gridTemplateColumns: variant === "guest" ? "1fr 1fr" : "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+                {(variant === "guest"
+                  ? [
+                      { label: "Количество сессий", value: String(STATION.sessions) },
+                      { label: "Выручка", value: STATION.revenue },
+                    ]
+                  : [
+                      { label: "Количество сессий", value: String(STATION.sessions) },
+                      { label: "Выручка", value: STATION.revenue },
+                      { label: "Потребление (кВт·ч)", value: STATION.consumption },
+                    ]
+                ).map((m) => (
                   <div
                     key={m.label}
                     style={{
@@ -261,9 +295,9 @@ export default function StationPage() {
               </div>
 
               <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
-                Вы авторизованы, но по этой станции у вас еще нет поданных заявок.
-                <br />
-                Можно подать первую заявку на инвестирование
+                {variant === "guest"
+                  ? "Для неавторизованных пользователей доступна только базовая информация по станции, ожидаемая доходность и агрегированная выручка за последние 30 дней"
+                  : "Вы авторизованы, но по этой станции у вас еще нет поданных заявок. Можно подать первую заявку на инвестирование"}
               </div>
             </div>
 
@@ -285,6 +319,25 @@ export default function StationPage() {
               </div>
               <LotBar total={STATION.totalLots} available={STATION.availableLots} />
 
+              {variant === "guest" ? (
+                <button
+                  style={{
+                    width: "100%",
+                    marginTop: 20,
+                    background: "#111",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 20,
+                    padding: "13px 0",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    fontFamily: "'Golos Text', sans-serif",
+                  }}
+                >
+                  Войти для инвестирования
+                </button>
+              ) : (
               <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
                 <button
                   onClick={() => setShowInvestModal(true)}
@@ -321,12 +374,13 @@ export default function StationPage() {
                   Мои инвестиции
                 </button>
               </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* My investments block */}
-        <div
+        {variant !== "guest" && <div
           style={{
             background: "#fff",
             borderRadius: 16,
@@ -353,7 +407,7 @@ export default function StationPage() {
             <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Статус заявки</div>
             <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>Заявок по станции пока нет</div>
           </div>
-        </div>
+        </div>}
       </div>
 
       <Footer />
