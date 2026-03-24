@@ -39,27 +39,29 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
 
       <div style={{ fontSize: 13, color: "#9ca3af" }}>{address}</div>
 
-      {/* Зона с фото: подложка фиксированная, изображение выходит вверх за неё */}
-      <div style={{ position: "relative", marginTop: 80 }}>
-        {/* Серая подложка — скруглённый блок */}
+      {/* Зона с фото: изображение в потоке, подложка за ним позиционирована абсолютно */}
+      <div style={{ position: "relative", marginTop: 4 }}>
+        {/* Серая подложка — нижние ~65% зоны, с отступами, скруглена */}
         <div
           style={{
+            position: "absolute",
+            bottom: 16,
+            left: 0,
+            right: 0,
+            top: "35%",
             background: "#ebebeb",
-            borderRadius: 12,
-            height: 300,
+            borderRadius: 20,
           }}
         />
-        {/* Изображение — прижато к низу подложки, выходит вверх за её границы */}
+        {/* Изображение — в потоке документа, задаёт высоту контейнера */}
         <img
           src="https://cdn.poehali.dev/projects/c36f0d06-fe77-43d5-8bbe-0e5118d187fb/bucket/1b8350ff-bb4c-44f9-bc16-3eacc1c4b439.png"
           alt="Зарядная станция hyper"
           style={{
-            position: "absolute",
-            bottom: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "82%",
+            position: "relative",
+            width: "80%",
             display: "block",
+            margin: "0 auto",
           }}
         />
       </div>
