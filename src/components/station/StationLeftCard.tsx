@@ -3,22 +3,24 @@ interface StationLeftCardProps {
   address: string;
 }
 
-/** Отступ от верха медиа-блока до верхнего края серой подложки (ниже = больше белого над серым). */
+/** Отступ от верха медиа-блока до верхнего края серой подложки. */
 const MEDIA_GREY_TOP = 100;
 /**
- * Насколько «вынести» станцию вверх над серым: растёт масштаб (пропорции сохраняются).
- * Раньше меняли высоту обёртки — при contain по ширине это не влияло; теперь EXTRA → scale.
+ * Ширина «логического» блока станции относительно медиа (= ширина серой подложки): clamp по % и px,
+ * чтобы на широком окне не залезать на правую колонку, на узком не схлопываться.
  */
-const IMAGE_BREAKOUT_EXTRA = 72;
-/** Базовый масштаб + вклад EXTRA (потолок — чтобы не разъезжалось за карточку). */
-const STATION_IMAGE_SCALE = Math.min(1.82, 1.12 + IMAGE_BREAKOUT_EXTRA / 160);
-/** Ширина колонки с фото в % контента (до scale). */
-const IMAGE_BASE_WIDTH_PCT = 88;
+const IMAGE_SHARE_OF_GREY_PCT = 93;
+const IMAGE_MAX_WIDTH_PX = 352;
+const IMAGE_MIN_WIDTH_PX = 148;
+/** Масштаб от низа: вылет верха над серым; ~1.25 обычно ок для двух колонок до ~1080px контента. */
+const STATION_VISUAL_SCALE = 1.24;
 
 export default function StationLeftCard({
   stationId,
   address,
 }: StationLeftCardProps) {
+  const imageWidth = `min(100%, max(${IMAGE_MIN_WIDTH_PX}px, min(${IMAGE_MAX_WIDTH_PX}px, ${IMAGE_SHARE_OF_GREY_PCT}%)))`;
+
   return (
     <div
       style={{
@@ -97,8 +99,7 @@ export default function StationLeftCard({
             left: "50%",
             bottom: 0,
             transform: "translateX(-50%)",
-            width: `${IMAGE_BASE_WIDTH_PCT}%`,
-            maxWidth: "100%",
+            width: imageWidth,
             zIndex: 1,
             pointerEvents: "none",
             textAlign: "center",
@@ -113,7 +114,7 @@ export default function StationLeftCard({
               height: "auto",
               display: "inline-block",
               verticalAlign: "bottom",
-              transform: `scale(${STATION_IMAGE_SCALE})`,
+              transform: `scale(${STATION_VISUAL_SCALE})`,
               transformOrigin: "bottom center",
             }}
           />
