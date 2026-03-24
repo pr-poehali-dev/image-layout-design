@@ -14,7 +14,7 @@ const STATIONS = [
     address: "ул. Воронцово Поле · ул. Воронцово Поле, 16, стр. 1",
     power: "150 кВт · Быстрая DC",
     connectors: "1 CCS · 1 GBT",
-    lotPrice: "100 000 Р",
+    lotPrice: "100 000 ₽",
     totalLots: 20,
     availableLots: 8,
   },
@@ -27,7 +27,7 @@ const STATIONS = [
     address: 'ТЦ "Мега" · с. Федяково, ул. Любкина, 1',
     power: "120 кВт · Быстрая DC",
     connectors: "1 CCS · 1 GBT",
-    lotPrice: "100 000 Р",
+    lotPrice: "100 000 ₽",
     totalLots: 20,
     availableLots: 0,
   },
@@ -40,7 +40,7 @@ const STATIONS = [
     address: "ул. Труда · ул. Труда, 203, подземный паркинг",
     power: "90 кВт · Быстрая DC",
     connectors: "1 CCS · 1 GBT",
-    lotPrice: "100 000 Р",
+    lotPrice: "100 000 ₽",
     totalLots: 20,
     availableLots: 13,
   },
@@ -53,7 +53,7 @@ const STATIONS = [
     address: "ул. Воронцово Поле · ул. Воронцово Поле, 16, стр. 1",
     power: "180 кВт · Быстрая DC",
     connectors: "1 CCS · 1 GBT",
-    lotPrice: "100 000 Р",
+    lotPrice: "100 000 ₽",
     totalLots: 20,
     availableLots: 5,
   },
@@ -66,7 +66,7 @@ const STATIONS = [
     address: 'ТРЦ "Космос" · Московский проспект, 108',
     power: "60 кВт · Быстрая DC",
     connectors: "1 CCS · 1 GBT",
-    lotPrice: "100 000 Р",
+    lotPrice: "100 000 ₽",
     totalLots: 20,
     availableLots: 20,
   },
@@ -155,32 +155,37 @@ export default function MainPage() {
             </h1>
             <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 8px", lineHeight: 1.5 }}>
               Вы выбираете станцию на карте или в списке, инвестируете от{" "}
-              <strong style={{ color: "#111" }}>100 000 Р</strong>
+              <strong style={{ color: "#111" }}>100 000 ₽</strong>
             </p>
             <p style={{ fontSize: 14, color: "#6b7280", margin: 0, lineHeight: 1.5 }}>
               и получаете долю <strong style={{ color: "#111" }}>gross-выручки</strong> по условиям оферты
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, minWidth: 300 }}>
-            {[
-              { label: "Проектов", value: "5" },
-              { label: "Доступно лотов", value: "46" },
-              { label: "Ожидаемая доходность", value: "57% IRR" },
-              { label: "Минимальная стоимость лота", value: "500 000 Р" },
-            ].map((item) => (
-              <div
-                key={item.label}
-                style={{
-                  background: "#f9f9f9",
-                  borderRadius: 10,
-                  padding: "14px 16px",
-                }}
-              >
-                <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>{item.label}</div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: "#111" }}>{item.value}</div>
-              </div>
-            ))}
+          <div style={{ minWidth: 300 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              {[
+                { label: "Проектов", value: "5" },
+                { label: "Доступно лотов", value: "46" },
+                { label: "Ожидаемая доходность", value: "57% IRR" },
+                { label: "Минимальная стоимость лота", value: "500 000 ₽" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: "#f9f9f9",
+                    borderRadius: 10,
+                    padding: "14px 16px",
+                  }}
+                >
+                  <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 4 }}>{item.label}</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: "#111" }}>{item.value}</div>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: "#9ca3af", margin: "12px 0 0", lineHeight: 1.5 }}>
+              Доходность и фактическая загрузка станции зависит от трафика, локации и условий эксплуатации. Перед инвестированием ознакомьтесь с офертой и рисками
+            </p>
           </div>
         </div>
 
@@ -569,15 +574,20 @@ export default function MainPage() {
                   </div>
                 )}
 
-                <div
-                  style={{
-                    fontSize: 11,
-                    color: STATUS_COLORS[station.status],
-                    fontWeight: 500,
-                    marginBottom: 4,
-                  }}
-                >
-                  {station.statusLabel}
+                <div style={{ marginBottom: 8 }}>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      fontSize: 11,
+                      color: STATUS_COLORS[station.status],
+                      fontWeight: 500,
+                      border: `1px solid ${station.status === "active" ? "#ddd" : "#e5e7eb"}`,
+                      borderRadius: 20,
+                      padding: "3px 12px",
+                    }}
+                  >
+                    {station.statusLabel}
+                  </span>
                 </div>
                 <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 2 }}>
                   {station.region} · {station.city}
@@ -598,8 +608,10 @@ export default function MainPage() {
                       display: "flex",
                       justifyContent: "space-between",
                       fontSize: 13,
-                      padding: "8px 0",
-                      borderTop: "1px solid #f0f0f0",
+                      padding: "8px 12px",
+                      background: "#f9f9f9",
+                      borderRadius: 8,
+                      marginBottom: 4,
                     }}
                   >
                     <span style={{ color: "#9ca3af" }}>{row.label}</span>

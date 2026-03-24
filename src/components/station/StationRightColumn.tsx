@@ -109,7 +109,7 @@ export default function StationRightColumn({ station, variant, onInvest }: Stati
               style={{
                 background: "transparent",
                 border: "1.5px solid #ddd",
-                borderRadius: 10,
+                borderRadius: 20,
                 padding: "7px 16px",
                 fontSize: 13,
                 fontWeight: 500,

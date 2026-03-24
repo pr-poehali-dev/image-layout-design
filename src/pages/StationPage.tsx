@@ -17,7 +17,7 @@ const STATION = {
   totalLots: 20,
   availableLots: 13,
   sessions: 200,
-  revenue: "684 000 Р",
+  revenue: "684 000 ₽",
   consumption: "12 840",
 };
 
@@ -124,9 +124,7 @@ export default function StationPage() {
                 background: "#e8e8e8",
                 borderRadius: 12,
                 overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                flex: 1,
               }}
             >
               <img
@@ -207,7 +205,7 @@ export default function StationPage() {
                     }}
                   >
                     <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>{m.label}</div>
-                    <div style={{ fontSize: 20, fontWeight: 700, color: "#111" }}>{m.value}</div>
+                    <div style={{ fontSize: 24, fontWeight: 700, color: "#111" }}>{m.value}</div>
                   </div>
                 ))}
               </div>
@@ -221,7 +219,7 @@ export default function StationPage() {
                     style={{
                       background: "transparent",
                       border: "1.5px solid #ddd",
-                      borderRadius: 10,
+                      borderRadius: 20,
                       padding: "7px 16px",
                       fontSize: 13,
                       fontWeight: 500,
@@ -303,7 +301,7 @@ export default function StationPage() {
                     fontFamily: "'Golos Text', sans-serif",
                   }}
                 >
-                  Инвестировать
+                  {variant === "auth" ? "Инвестировать" : "Инвестировать еще"}
                 </button>
                 <button
                   onClick={() => navigate("/investments")}
@@ -352,7 +350,7 @@ export default function StationPage() {
                 {[
                   { label: "Лотов в заявке", value: "1 лот" },
                   { label: "Лотов куплено", value: "3 лота" },
-                  { label: "Объем инвестиций", value: "300 000 Р" },
+                  { label: "Объем инвестиций", value: "300 000 ₽" },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -378,7 +376,7 @@ export default function StationPage() {
                 {[
                   { label: "Статус заявки", value: "На модерации" },
                   { label: "Лотов на модерации", value: "1 лот" },
-                  { label: "Объем инвестиций", value: "100 000 Р" },
+                  { label: "Объем инвестиций", value: "100 000 ₽" },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -402,7 +400,7 @@ export default function StationPage() {
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
               {[
                 { label: "Лотов куплено", value: "3 лота" },
-                { label: "Объем инвестиций", value: "300 000 Р" },
+                { label: "Объем инвестиций", value: "300 000 ₽" },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -453,7 +451,7 @@ export default function StationPage() {
                 <select
                   style={{
                     border: "1.5px solid #e5e7eb",
-                    borderRadius: 10,
+                    borderRadius: 20,
                     padding: "8px 14px",
                     fontSize: 13,
                     color: "#111",
@@ -477,7 +475,7 @@ export default function StationPage() {
                     background: "#111",
                     color: "#fff",
                     border: "none",
-                    borderRadius: 10,
+                    borderRadius: 20,
                     padding: "9px 18px",
                     fontSize: 13,
                     fontWeight: 600,
@@ -494,7 +492,7 @@ export default function StationPage() {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid #f0f0f0" }}>
-                  {["Дата старта", "Дата завершения", "Потребление, кВт·ч", "Выручка, Р"].map((col) => (
+                  {["Дата старта", "Дата завершения", "Потребление, кВт·ч", "Выручка, ₽"].map((col) => (
                     <th
                       key={col}
                       style={{
@@ -520,14 +518,14 @@ export default function StationPage() {
                   { start: "2026-03-03 09:15", end: "2026-03-03 11:15", kwh: "34,6", revenue: "657" },
                   { start: "2026-03-04 11:42", end: "2026-03-04 13:42", kwh: "41,2", revenue: "783" },
                 ].map((row, i) => (
-                  <tr key={i} style={{ borderBottom: "1px solid #f9f9f9" }}>
+                  <tr key={i} style={{ borderBottom: "1px solid #f5f5f5" }}>
                     {[row.start, row.end, row.kwh, row.revenue].map((cell, j) => (
                       <td
                         key={j}
                         style={{
                           padding: "11px 12px",
                           textAlign: "center",
-                          fontSize: 13,
+                          fontSize: 14,
                           color: "#111",
                         }}
                       >
@@ -631,7 +629,7 @@ export default function StationPage() {
             <div style={{ textAlign: "center", fontSize: 14, color: "#6b7280", marginBottom: 24 }}>
               Выбрано <strong style={{ color: "#111" }}>{selectedLots} лота</strong> на сумму:{" "}
               <strong style={{ color: "#111" }}>
-                {(selectedLots * lotPrice).toLocaleString("ru-RU")} Р
+                {(selectedLots * lotPrice).toLocaleString("ru-RU")} ₽
               </strong>
             </div>
 

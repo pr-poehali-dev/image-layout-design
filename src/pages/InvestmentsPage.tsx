@@ -128,7 +128,7 @@ export default function InvestmentsPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
             {[
               { label: "Количество сессий", value: "1 732" },
-              { label: "Выручка", value: "684 000 Р" },
+              { label: "Выручка", value: "684 000 ₽" },
               { label: "Потребление (кВт·ч)", value: "120 840" },
               { label: "Средняя сессия (кВт·ч/сессию)", value: "20.5" },
             ].map((m) => (
@@ -296,7 +296,7 @@ export default function InvestmentsPage() {
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                {["Станция", "Лоты", "Статус оплаты", "Потребление", "Выручка, Р", "Действия"].map(
+                {["Станция", "Лоты", "Статус оплаты", "Потребление", "Выручка, ₽", "Действия"].map(
                   (col) => (
                     <th
                       key={col}
@@ -305,7 +305,7 @@ export default function InvestmentsPage() {
                         padding: "10px 12px",
                         fontSize: 13,
                         color: "#9ca3af",
-                        fontWeight: 500,
+                        fontWeight: 400,
                         borderBottom: "1px solid #f0f0f0",
                       }}
                     >
