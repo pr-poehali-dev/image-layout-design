@@ -294,13 +294,37 @@ export default function StationPage() {
                 ))}
               </div>
 
-              <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
-                {variant === "guest"
-                  ? "Для неавторизованных пользователей доступна только базовая информация по станции, ожидаемая доходность и агрегированная выручка за последние 30 дней"
-                  : variant === "pending" || variant === "no-lots"
-                  ? "По станции уже есть заявка, но она еще не прошла модерацию. Последняя выплата не отображается до подтверждения лотов"
-                  : "Вы авторизованы, но по этой станции у вас еще нет поданных заявок. Можно подать первую заявку на инвестирование"}
-              </div>
+              {variant === "approved" ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                  <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
+                    Последняя выплата не отображается до подтверждения лотов
+                  </div>
+                  <button
+                    style={{
+                      background: "transparent",
+                      border: "1.5px solid #ddd",
+                      borderRadius: 10,
+                      padding: "7px 16px",
+                      fontSize: 13,
+                      fontWeight: 500,
+                      cursor: "pointer",
+                      fontFamily: "'Golos Text', sans-serif",
+                      color: "#111",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Детализация
+                  </button>
+                </div>
+              ) : (
+                <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
+                  {variant === "guest"
+                    ? "Для неавторизованных пользователей доступна только базовая информация по станции, ожидаемая доходность и агрегированная выручка за последние 30 дней"
+                    : variant === "pending" || variant === "no-lots"
+                    ? "По станции уже есть заявка, но она еще не прошла модерацию. Последняя выплата не отображается до подтверждения лотов"
+                    : "Вы авторизованы, но по этой станции у вас еще нет поданных заявок. Можно подать первую заявку на инвестирование"}
+                </div>
+              )}
             </div>
 
             {/* Lots card */}
@@ -317,13 +341,13 @@ export default function StationPage() {
 
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>
                 <span>Размещение лотов</span>
-                <span>Доступно лотов {variant === "pending" ? 12 : variant === "no-lots" ? 10 : STATION.availableLots}/{STATION.totalLots}</span>
+                <span>Доступно лотов {variant === "pending" ? 12 : (variant === "no-lots" || variant === "approved") ? 10 : STATION.availableLots}/{STATION.totalLots}</span>
               </div>
               <LotBar
                 total={STATION.totalLots}
-                available={variant === "pending" ? 12 : variant === "no-lots" ? 10 : STATION.availableLots}
-                selected={variant === "pending" ? 1 : 0}
-                owned={variant === "no-lots" ? 3 : 0}
+                available={variant === "pending" ? 12 : (variant === "no-lots" || variant === "approved") ? 10 : STATION.availableLots}
+                selected={variant === "pending" ? 1 : variant === "approved" ? 1 : 0}
+                owned={variant === "no-lots" || variant === "approved" ? 3 : 0}
               />
 
               {variant === "guest" ? (
@@ -399,14 +423,38 @@ export default function StationPage() {
             Мои инвестиции по станции
           </h2>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 24px" }}>
-            {variant === "pending"
-              ? "Здесь отображается состояние заявки до подписания договора и подтверждения оплаты"
-              : variant === "no-lots"
+            {variant === "pending" || variant === "no-lots" || variant === "approved"
               ? "Здесь отображается состояние заявки до подписания договора и подтверждения оплаты"
               : "В этом блоке отображается ваш статус по станции, когда вы подаете заявки и покупаете лоты"}
           </p>
 
-          {variant === "pending" ? (
+          {variant === "approved" ? (
+            <>
+              <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
+                {[
+                  { label: "Лотов в заявке", value: "1 лот" },
+                  { label: "Лотов куплено", value: "3 лота" },
+                  { label: "Объем инвестиций", value: "300 000 Р" },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      background: "#f9f9f9",
+                      borderRadius: 10,
+                      padding: "14px 20px",
+                      minWidth: 140,
+                    }}
+                  >
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 6 }}>{item.label}</div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{item.value}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6 }}>
+                Мы ожидаем завершения проверки документов и подтверждения оплаты. После этого лоты перейдут в подтвержденный статус и откроется детализация по сессиям
+              </div>
+            </>
+          ) : variant === "pending" ? (
             <>
               <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
                 {[
@@ -468,8 +516,8 @@ export default function StationPage() {
           )}
         </div>}
 
-        {/* Sessions table — no-lots variant */}
-        {variant === "no-lots" && (
+        {/* Sessions table — no-lots & approved variants */}
+        {(variant === "no-lots" || variant === "approved") && (
           <div
             style={{
               background: "#fff",
