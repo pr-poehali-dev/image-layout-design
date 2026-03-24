@@ -196,13 +196,14 @@ export default function StationPage() {
                   position: "absolute",
                   bottom: 20,
                   left: 20,
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: 18,
                   opacity: 0.9,
                 }}
               >
-                ⓔ hyper
+                <img
+                  src="https://cdn.poehali.dev/projects/c36f0d06-fe77-43d5-8bbe-0e5118d187fb/bucket/21f32e5d-2c53-47f0-a107-067ea96566d6.png"
+                  alt="hyper"
+                  style={{ height: 18, display: "block", filter: "invert(1)" }}
+                />
               </div>
               <div
                 style={{

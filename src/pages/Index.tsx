@@ -24,7 +24,11 @@ export default function Index() {
           marginBottom: 48,
         }}
       >
-        <span style={{ fontSize: 28, fontWeight: 800, color: "#111" }}>ⓔ hyper</span>
+        <img
+          src="https://cdn.poehali.dev/projects/c36f0d06-fe77-43d5-8bbe-0e5118d187fb/bucket/21f32e5d-2c53-47f0-a107-067ea96566d6.png"
+          alt="hyper"
+          style={{ height: 30, display: "block" }}
+        />
         <span style={{ fontSize: 28, fontWeight: 400, color: "#111" }}>Investments</span>
       </div>
 
