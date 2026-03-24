@@ -9,10 +9,11 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
       style={{
         background: "#fff",
         borderRadius: 16,
-        padding: "28px",
+        padding: "28px 28px 0 28px",
         display: "flex",
         flexDirection: "column",
         gap: 12,
+        overflow: "hidden",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -39,11 +40,13 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
 
       <div style={{ fontSize: 13, color: "#9ca3af" }}>{address}</div>
 
+      {/* Серая подложка с отступами по бокам, изображение касается низа карточки */}
       <div
         style={{
           background: "#e8e8e8",
-          borderRadius: 12,
+          borderRadius: "12px 12px 0 0",
           overflow: "hidden",
+          margin: "0 -4px",
           flex: 1,
         }}
       >
