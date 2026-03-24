@@ -297,6 +297,8 @@ export default function StationPage() {
               <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.5 }}>
                 {variant === "guest"
                   ? "Для неавторизованных пользователей доступна только базовая информация по станции, ожидаемая доходность и агрегированная выручка за последние 30 дней"
+                  : variant === "pending"
+                  ? "По станции уже есть заявка, но она еще не прошла модерацию. Последняя выплата не отображается до подтверждения лотов"
                   : "Вы авторизованы, но по этой станции у вас еще нет поданных заявок. Можно подать первую заявку на инвестирование"}
               </div>
             </div>
@@ -315,9 +317,13 @@ export default function StationPage() {
 
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>
                 <span>Размещение лотов</span>
-                <span>Доступно лотов {STATION.availableLots}/{STATION.totalLots}</span>
+                <span>Доступно лотов {variant === "pending" ? 12 : STATION.availableLots}/{STATION.totalLots}</span>
               </div>
-              <LotBar total={STATION.totalLots} available={STATION.availableLots} />
+              <LotBar
+                total={STATION.totalLots}
+                available={variant === "pending" ? 12 : STATION.availableLots}
+                selected={variant === "pending" ? 1 : 0}
+              />
 
               {variant === "guest" ? (
                 <button
@@ -392,21 +398,51 @@ export default function StationPage() {
             Мои инвестиции по станции
           </h2>
           <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 24px" }}>
-            В этом блоке отображается ваш статус по станции, когда вы подаете заявки и покупаете лоты
+            {variant === "pending"
+              ? "Здесь отображается состояние заявки до подписания договора и подтверждения оплаты"
+              : "В этом блоке отображается ваш статус по станции, когда вы подаете заявки и покупаете лоты"}
           </p>
 
-          <div
-            style={{
-              background: "#f9f9f9",
-              borderRadius: 10,
-              padding: "16px 20px",
-              display: "inline-block",
-              minWidth: 220,
-            }}
-          >
-            <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Статус заявки</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>Заявок по станции пока нет</div>
-          </div>
+          {variant === "pending" ? (
+            <>
+              <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
+                {[
+                  { label: "Статус заявки", value: "На модерации" },
+                  { label: "Лотов на модерации", value: "1 лот" },
+                  { label: "Объем инвестиций", value: "100 000 Р" },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      background: "#f9f9f9",
+                      borderRadius: 10,
+                      padding: "14px 20px",
+                      minWidth: 140,
+                    }}
+                  >
+                    <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 6 }}>{item.label}</div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>{item.value}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6 }}>
+                Мы ожидаем завершения проверки документов и подтверждения оплаты. После этого лоты перейдут в подтвержденный статус и откроется детализация по сессиям
+              </div>
+            </>
+          ) : (
+            <div
+              style={{
+                background: "#f9f9f9",
+                borderRadius: 10,
+                padding: "16px 20px",
+                display: "inline-block",
+                minWidth: 220,
+              }}
+            >
+              <div style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Статус заявки</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#111" }}>Заявок по станции пока нет</div>
+            </div>
+          )}
         </div>}
       </div>
 
