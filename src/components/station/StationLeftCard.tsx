@@ -46,7 +46,7 @@ export default function StationLeftCard({ stationId, address }: StationLeftCardP
           style={{
             position: "absolute",
             top: "15%",
-            bottom: -28,
+            bottom: 12,
             left: 12,
             right: 12,
             background: "#ebebeb",
